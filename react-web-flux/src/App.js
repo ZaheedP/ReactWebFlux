@@ -1,40 +1,51 @@
 import { useEffect, useState } from "react";
+import Subjects from "./components/Subjects";
+
 import "./App.css";
 function App() {
-  const makeAPICall = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:8080/swot/api/v1/file/get-public-files",
-        { mode: "cors" }
-      );
-      const data = await response.json();
-      console.log({ data });
-    } catch (e) {
-      console.log(e);
-    }
+  const [subjects, setSubjects] = useState([]);
+
+  const fetchSubjects = async () => {
+    const response = await fetch(
+      "http://localhost:8080/swot/api/v1/subject/get-all",
+      { mode: "cors" }
+    );
+    const data = await response.json();
+    console.log({ data });
+    return data;
   };
+
   useEffect(() => {
-    makeAPICall();
+    const getSubjects = async () => {
+      const subjectsFromServer = await fetchSubjects();
+      setSubjects(subjectsFromServer);
+    };
+
+    getSubjects();
   }, []);
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        {/* <img src={logo} className="App-logo" alt="logo" /> */}
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  // const [subjects] = useState([
+  //   {
+  //     id: 1,
+  //     text: "Doctors",
+  //     day: "5th Feb",
+  //     reminder: true,
+  //   },
+  //   {
+  //     id: 2,
+  //     text: "Teacher",
+  //     day: "5th March",
+  //     reminder: true,
+  //   },
+  //   {
+  //     id: 3,
+  //     text: "Dog",
+  //     day: "24th April",
+  //     reminder: false,
+  //   },
+  // ]);
+
+  return <Subjects subjects={subjects} />;
 }
 
 export default App;
