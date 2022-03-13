@@ -1,11 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { useEffect, useState } from "react";
+import "./App.css";
 function App() {
+  const makeAPICall = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/swot/api/v1/file/get-public-files",
+        { mode: "cors" }
+      );
+      const data = await response.json();
+      console.log({ data });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    makeAPICall();
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        {/* <img src={logo} className="App-logo" alt="logo" /> */}
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
